@@ -25,18 +25,20 @@ export async function updateUser({
   connectToDB();
 
   try {
-    console.log("=== here is the uploading info: ",
+    console.log(
+      "=== here is the uploading info: ",
       { id: userId },
       {
         username: username.toLowerCase(),
         name,
         bio,
         image,
-        onvoarded: true,
+        onboarded: true,
       },
       {
         upsert: true,
-      }, "==========="
+      },
+      "==========="
     );
     await User.findOneAndUpdate(
       { id: userId },
@@ -45,7 +47,7 @@ export async function updateUser({
         name,
         bio,
         image,
-        onvoarded: true,
+        onboarded: true,
       },
       {
         upsert: true,
@@ -59,5 +61,18 @@ export async function updateUser({
     }
   } catch (error: any) {
     throw new Error(`Failed to create/upate user ${error.message}`);
+  }
+}
+
+export async function fetchUser(userId: string) {
+  try {
+    connectToDB();
+    return await User.findOne({ id: userId })
+    //   .populate({
+    //   path: "communities",
+    //   model: Community,
+    // });
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`)
   }
 }
